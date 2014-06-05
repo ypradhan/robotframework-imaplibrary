@@ -4,6 +4,7 @@ import imaplib
 import time
 import urllib2
 import email
+from BeautifulSoup import BeautifulSoup
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 execfile(os.path.join(THIS_DIR, 'version.py'))
@@ -55,7 +56,9 @@ class ImapLibrary(object):
         `mailNumber` is the index number of the mail to open
         '''
         body = self.get_email_body(mailNumber)
-        return re.findall(r'href=[\'"]?([^\'" >]+)', body)
+        soup = BeautifulSoup(body)
+	    return soup.findAll('a', href=True)
+        #return re.findall(r'href=[\'"]?([^\'" >]+)', body)
 
     def get_matches_from_email(self, mailNumber, regexp):
         """
