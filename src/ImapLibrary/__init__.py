@@ -56,9 +56,9 @@ class ImapLibrary(object):
         `mailNumber` is the index number of the mail to open
         '''
         body = self.get_email_body(mailNumber)
-        soup = BeautifulSoup(body)
-	return soup.findAll('a', href=True)
-        #return re.findall(r'href=[\'"]?([^\'" >]+)', body)
+        #soup = BeautifulSoup(body)
+	#return soup.findAll('a', href=True)
+        return re.findall(r'href=[\'"]?([^\'" >]+)', body)
 
     def get_matches_from_email(self, mailNumber, regexp):
         """
@@ -111,7 +111,7 @@ class ImapLibrary(object):
         if self._is_walking_multipart(mailNumber):
             body = self.get_multipart_payload(decode=True)
         else:
-            body = self.imap.fetch(mailNumber, '(BODY[TEXT])')[1][0][1].decode('quoted-printable')
+            body = self.imap.fetch(mailNumber, '(BODY[TEXT])')[1][0][1].decode('UTF-8')
         return body
 
     def walk_multipart_email(self, mailNumber):
